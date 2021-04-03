@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:yummy="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:converters="clr-namespace:ZimeTones.Converters"
+             xmlns:fontAwesome="clr-namespace:FontAwesome"
+             x:Class="ZimeTones.MainPage"
+             Title="ZimeTones">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:DateTimeToDateConverter x:Key="dateTimeToDate" />
+            <converters:DateTimeToTimeConverter x:Key="dateTimeToTime" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <CollectionView ItemsSource="{Binding ZimeTomeObjects}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Grid Padding="8">
+                    <yummy:PancakeView Padding="20" CornerRadius="20" BackgroundColor="{Binding Color}">
+                        <yummy:PancakeView.Shadow>
+                                <yummy:DropShadow Color="#000000" Offset="0,5" />
+                        </yummy:PancakeView.Shadow>
+
+                        <Grid RowSpacing="10">
+                            <Label Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding Location}" FontSize="Large" />
+                            
+                            <Label Grid.Row="1">
+
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ChangeDateRecognizer_Tapped" />
+                                </Label.GestureRecognizers>
+
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span FontFamily="FontAwesome-Regular" Text="{x:Static fontAwesome:FontAwesomeIcons.Calendar}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding LocalTime, Converter={StaticResource dateTimeToDate}}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                                                        
+                            <Label Grid.Row="1" Grid.Column="1">
+
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ChangeTimeRecognizer_Tapped" />
+                                </Label.GestureRecognizers>
+
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span FontFamily="FontAwesome-Regular" Text="{x:Static fontAwesome:FontAwesomeIcons.Clock}" />
+                                        <Span Text=" " />
+                                        <Span Text="{Binding LocalTime, Converter={StaticResource dateTimeToTime}}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                        </Grid>
+
+                    </yummy:PancakeView>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+        
+        <DatePicker x:Name="SecretDatePicker" IsVisible="false"  />
+        <TimePicker x:Name="SecretTimePicker" IsVisible="false" PropertyChanged="SecretTimePicker_PropertyChanged"  />
+    </Grid>
+</ContentPage>
